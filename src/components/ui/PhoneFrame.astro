@@ -1,0 +1,40 @@
+---
+// Pure-CSS mobile frame. The screen content is provided via the default slot.
+interface Props {
+  label?: string; // accessible label for the mockup
+  class?: string;
+  auto?: boolean; // when true, screen height follows content instead of a fixed 9:19.2 aspect
+}
+const {
+  label = "학원 전용 앱 화면 미리보기",
+  class: extra = "",
+  auto = false,
+} = Astro.props;
+---
+
+<div
+  role="img"
+  aria-label={label}
+  class={`relative mx-auto w-full max-w-[280px] rounded-[1.9rem] bg-ink-950 p-1.5 shadow-[0_2px_8px_rgba(15,15,20,0.18),0_40px_80px_-32px_rgba(32,29,74,0.45)] ring-1 ring-ink-900/60 ${extra}`}
+>
+  <!-- side buttons -->
+  <span
+    class="absolute top-24 -left-[2px] h-12 w-[2px] rounded-l bg-ink-800"
+    aria-hidden="true"></span>
+  <span
+    class="absolute top-20 -right-[2px] h-8 w-[2px] rounded-r bg-ink-800"
+    aria-hidden="true"></span>
+
+  <div
+    class="relative overflow-hidden rounded-[1.55rem] bg-bg"
+    style={auto ? "" : "aspect-ratio: 9 / 19.2;"}
+  >
+    <!-- notch -->
+    <span
+      class="absolute top-1.5 left-1/2 z-10 h-4 w-20 -translate-x-1/2 rounded-full bg-ink-950"
+      aria-hidden="true"></span>
+    <div class="h-full overflow-hidden">
+      <slot />
+    </div>
+  </div>
+</div>

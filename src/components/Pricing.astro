@@ -1,0 +1,88 @@
+---
+import SectionHeader from "./ui/SectionHeader.astro";
+import CheckList from "./ui/CheckList.astro";
+import Button from "./ui/Button.astro";
+import {
+  pricingHeading,
+  pricingLead,
+  pricingPlans,
+  earlyAdopterBanner,
+} from "../data/pricing";
+import { primaryCta } from "../data/navigation";
+---
+
+<section id="pricing" class="section-y bg-bg-subtle">
+  <div class="container-content">
+    <SectionHeader eyebrow="요금" heading={pricingHeading} lead={pricingLead} />
+
+    <div class="mx-auto mt-14 grid max-w-4xl gap-5 md:grid-cols-2">
+      {
+        pricingPlans.map((plan, i) => (
+          <div
+            class:list={[
+              "reveal relative flex flex-col rounded-panel border p-7 sm:p-8",
+              plan.highlight
+                ? "border-brand bg-bg shadow-[0_30px_60px_-30px_rgba(91,91,214,0.5)] ring-1 ring-brand"
+                : "border-border bg-bg",
+            ]}
+            style={`--reveal-delay: ${i * 90}ms;`}
+          >
+            {plan.badge && (
+              <span class="absolute top-6 right-6 rounded-pill bg-brand px-3 py-1 text-[0.72rem] font-bold text-on-brand">
+                {plan.badge}
+              </span>
+            )}
+            <p class="text-sm font-semibold text-fg-subtle">{plan.audience}</p>
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-3xl font-bold tracking-tight text-fg">
+                {plan.price}
+              </span>
+              {plan.unit && (
+                <span class="text-[0.85rem] text-fg-subtle">{plan.unit}</span>
+              )}
+            </div>
+            <p class="mt-3 text-[0.92rem] leading-relaxed text-fg-muted">
+              {plan.description}
+            </p>
+            <CheckList items={plan.features} class="mt-6 flex-1" />
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- early adopter banner -->
+    <div
+      class="reveal relative mt-6 overflow-hidden rounded-panel bg-ink-950 p-8 sm:p-10"
+    >
+      <div
+        class="pointer-events-none absolute -top-16 -right-16 size-56 rounded-full opacity-50 blur-3xl"
+        style="background: radial-gradient(circle, rgba(91,91,214,0.55), transparent 70%);"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="relative flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between"
+      >
+        <div class="max-w-xl">
+          <span
+            class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-1 text-[0.78rem] font-semibold text-white/90"
+          >
+            <span class="size-1.5 rounded-full bg-signal-warn"></span>
+            {earlyAdopterBanner.eyebrow}
+          </span>
+          <h3 class="mt-4 text-h3 font-bold text-white sm:text-2xl">
+            {earlyAdopterBanner.title}
+          </h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-white/70">
+            {earlyAdopterBanner.body}
+          </p>
+        </div>
+        <div class="shrink-0">
+          <Button href={primaryCta.href} variant="primary" size="lg">
+            {primaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

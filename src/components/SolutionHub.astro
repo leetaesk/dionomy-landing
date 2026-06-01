@@ -1,0 +1,126 @@
+---
+import CheckList from "./ui/CheckList.astro";
+import { solutions } from "../data/solutions";
+
+const s = solutions.find((x) => x.id === "hub")!;
+const titleLines = s.title.split("\n");
+---
+
+<div
+  class="container-content grid items-center gap-12 lg:grid-cols-2 lg:gap-16"
+>
+  <!-- copy -->
+  <div class="reveal order-1">
+    <div class="flex items-center gap-3">
+      <span
+        class="grid size-9 place-items-center rounded-xl bg-brand text-sm font-bold text-on-brand"
+        >{s.number}</span
+      >
+      <span class="text-sm font-semibold text-brand-strong">{s.eyebrow}</span>
+    </div>
+    <h3 class="mt-5 text-h2 text-fg">
+      {
+        titleLines.map((line, i) => (
+          <>
+            {line}
+            {i < titleLines.length - 1 && <br />}
+          </>
+        ))
+      }
+    </h3>
+    <p class="mt-5 text-lead text-fg-muted">{s.lead}</p>
+    <CheckList items={s.points} class="mt-7" />
+  </div>
+
+  <!-- automation flow mockup -->
+  <div class="reveal order-2" style="--reveal-delay: 100ms;">
+    <div
+      class="relative rounded-panel border border-border bg-gradient-to-b from-bg-subtle to-bg p-6 shadow-[0_30px_60px_-36px_rgba(32,29,74,0.4)] sm:p-8"
+    >
+      <p class="text-sm font-semibold text-fg-subtle">자동 동기화</p>
+
+      <!-- step 1: 수강생 변경 -->
+      <div class="mt-4 rounded-2xl bg-bg p-4 shadow-sm ring-1 ring-border">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span
+              class="grid size-8 place-items-center rounded-full bg-bg-muted text-sm font-bold text-fg-muted"
+              >수</span
+            >
+            <p class="text-[0.9rem] font-medium text-fg">수강생 일정 변경</p>
+          </div>
+          <span
+            class="rounded-pill bg-bg-subtle px-2.5 py-1 text-[0.7rem] font-semibold text-fg-muted"
+            >수 → 목</span
+          >
+        </div>
+      </div>
+
+      <div class="flow-connector"><span></span></div>
+
+      <!-- step 2: 시스템 자동 반영 -->
+      <div class="rounded-2xl border border-brand-softer bg-brand-soft/70 p-4">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="grid size-8 place-items-center rounded-full bg-brand text-on-brand"
+          >
+            <svg class="size-4" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M10 3a7 7 0 0 0-6.32 4 .9.9 0 0 0 1.62.78A5.2 5.2 0 0 1 10 4.8c1.7 0 3.2.82 4.14 2.1l-1.5.02a.9.9 0 0 0 0 1.8l3.36-.04a.9.9 0 0 0 .9-.9V4.4a.9.9 0 0 0-1.8 0v1.18A7 7 0 0 0 10 3Zm6.7 8.42a.9.9 0 0 0-1.2.4A5.2 5.2 0 0 1 10 15.2a5.2 5.2 0 0 1-4.14-2.06l1.5-.02a.9.9 0 0 0 0-1.8l-3.36.04a.9.9 0 0 0-.9.9v3.34a.9.9 0 0 0 1.8 0v-1.2A7 7 0 0 0 10 17a7 7 0 0 0 6.32-4 .9.9 0 0 0-.62-1.58Z"
+              ></path>
+            </svg>
+          </span>
+          <div>
+            <p class="text-[0.9rem] font-bold text-fg">잔여 횟수 자동 반영</p>
+            <p class="text-[0.75rem] text-fg-muted">
+              차감·복구를 손대지 않아도
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-connector flow-connector--split"><span></span></div>
+
+      <!-- step 3: 양방향 알림 -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="rounded-2xl bg-bg p-3.5 shadow-sm ring-1 ring-border">
+          <p class="text-[0.7rem] font-medium text-fg-subtle">강사에게</p>
+          <p class="mt-1 text-[0.82rem] font-semibold text-fg">
+            변경 알림 발송
+          </p>
+        </div>
+        <div class="rounded-2xl bg-bg p-3.5 shadow-sm ring-1 ring-border">
+          <p class="text-[0.7rem] font-medium text-fg-subtle">수강생에게</p>
+          <p class="mt-1 text-[0.82rem] font-semibold text-fg">
+            확정 알림 발송
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .flow-connector {
+    display: grid;
+    place-items: center;
+    height: 1.75rem;
+  }
+  .flow-connector span {
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      var(--color-border-strong),
+      var(--color-brand)
+    );
+    border-radius: 999px;
+  }
+  .flow-connector--split span {
+    background: linear-gradient(
+      to bottom,
+      var(--color-brand),
+      var(--color-border-strong)
+    );
+  }
+</style>

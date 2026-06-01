@@ -1,0 +1,78 @@
+---
+import Button from "./ui/Button.astro";
+import { navLinks, primaryCta } from "../data/navigation";
+---
+
+<header
+  id="site-nav"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+  data-scrolled="false"
+>
+  <nav
+    class="container-content flex items-center justify-between gap-4 py-4 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    aria-label="주요"
+  >
+    <a
+      href="#top"
+      class="group inline-flex items-center gap-2.5 rounded-pill py-1 pr-2 text-fg"
+      aria-label="Dionomy 홈"
+    >
+      <img
+        src="/dionomy_logo.svg"
+        alt=""
+        width="48"
+        height="48"
+        class="size-8"
+        aria-hidden="true"
+      />
+      <span class="text-lg font-bold tracking-tight">Dionomy</span>
+    </a>
+
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="rounded-pill px-3.5 py-2 text-[0.95rem] font-medium text-fg-muted transition-colors hover:bg-bg-subtle hover:text-fg"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <Button href={primaryCta.href} variant="primary" size="md">
+        {primaryCta.label}
+      </Button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const nav = document.getElementById("site-nav");
+  if (nav) {
+    const onScroll = () => {
+      nav.dataset.scrolled = window.scrollY > 8 ? "true" : "false";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>
+
+<style>
+  #site-nav {
+    border-bottom: 1px solid transparent;
+  }
+  #site-nav[data-scrolled="true"] {
+    background-color: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom-color: var(--color-border);
+    box-shadow: 0 1px 24px -12px rgba(32, 29, 74, 0.4);
+  }
+  #site-nav[data-scrolled="true"] nav {
+    /* padding-block: 0.6rem; */
+  }
+</style>

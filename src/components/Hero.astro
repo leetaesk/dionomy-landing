@@ -1,0 +1,116 @@
+---
+import Button from "./ui/Button.astro";
+import { primaryCta, secondaryCta } from "../data/navigation";
+---
+
+<section id="top" class="relative overflow-hidden">
+  <!-- decorative background: soft glow + faint grid -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute top-[-10%] left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
+      style="background: radial-gradient(circle at center, rgba(91,91,214,0.16), rgba(91,91,214,0) 62%);"
+    >
+    </div>
+    <div
+      class="absolute inset-0 opacity-[0.5]"
+      style="background-image: linear-gradient(to right, rgba(32,29,74,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(32,29,74,0.04) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse 80% 60% at 50% 35%, black, transparent 75%);"
+    >
+    </div>
+  </div>
+
+  <div
+    class="container-content grid items-center gap-14 pt-32 pb-20 md:pt-36 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-28"
+  >
+    <!-- copy -->
+    <div class="reveal max-w-xl">
+      <h1
+        class="mt-6 text-display leading-[1.12] font-bold tracking-[-0.03em] text-balance text-fg"
+      >
+        우리 스튜디오만을 위한<br />
+        <span class="text-brand">우리 스튜디오 어플</span>
+      </h1>
+
+      <p class="mt-6 max-w-lg text-lead text-fg-muted">
+        수업 일정, 클래스 노트, 재등록 안내까지. <br /> 카톡과 엑셀로 흩어지던 일을
+        한 곳에 모으고 관리하세요.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-3">
+        <Button href={primaryCta.href} variant="primary" size="lg">
+          {primaryCta.label}
+        </Button>
+        <Button href={secondaryCta.href} variant="secondary" size="lg">
+          {secondaryCta.label}
+        </Button>
+      </div>
+
+      <dl
+        class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-fg-subtle"
+      >
+        <div class="flex items-center gap-2">
+          <svg
+            class="size-4 text-signal-ok"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.3 3.3 6.8-6.8a1 1 0 0 1 1.4 0Z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <dt class="sr-only">수강생·강사 비용</dt>
+          <dd>수강생·강사 무료</dd>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg
+            class="size-4 text-signal-ok"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.3 3.3 6.8-6.8a1 1 0 0 1 1.4 0Z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <dt class="sr-only">모집 현황</dt>
+          <dd>초기 10개 학원 무료 얼리어답터</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- app mockup -->
+    <div class="reveal relative" style="--reveal-delay: 120ms;">
+      <img
+        src="/hero_mock.png"
+        alt="Dionomy 앱 화면 미리보기 — 스튜디오 일정과 수업 관리"
+        class="w-[120%]"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes heroFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  .hero-float {
+    animation: heroFloat 6s ease-in-out infinite;
+  }
+  .hero-float-slow {
+    animation: heroFloat 7.5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-float,
+    .hero-float-slow {
+      animation: none;
+    }
+  }
+</style>

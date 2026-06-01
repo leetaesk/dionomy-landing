@@ -1,0 +1,23 @@
+---
+import SectionHeader from "./ui/SectionHeader.astro";
+import SolutionHub from "./SolutionHub.astro";
+import SolutionWhitelabel from "./SolutionWhitelabel.astro";
+import SolutionAiCrm from "./SolutionAiCrm.astro";
+import { solutionsHeading, solutionsLead } from "../data/solutions";
+---
+
+<section id="solutions" class="section-y">
+  <div class="container-content">
+    <SectionHeader
+      eyebrow="Dionomy가 하는 일"
+      heading={solutionsHeading}
+      lead={solutionsLead}
+    />
+  </div>
+
+  <div class="mt-16 space-y-24 md:mt-20 md:space-y-28">
+    <SolutionHub />
+    <SolutionWhitelabel />
+    <SolutionAiCrm />
+  </div>
+</section>

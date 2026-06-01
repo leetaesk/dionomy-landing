@@ -1,0 +1,788 @@
+---
+import PhoneFrame from "./ui/PhoneFrame.astro";
+import CheckList from "./ui/CheckList.astro";
+import { solutions } from "../data/solutions";
+import { tenants } from "../data/tenants";
+
+const s = solutions.find((x) => x.id === "whitelabel")!;
+const titleLines = s.title.split("\n");
+
+const t0 = tenants[0];
+const hours = [14, 15, 16, 17, 18, 19, 20];
+const days = ["월", "화", "수", "목", "금", "토", "일"];
+const rowStart = (start: number) => (start - 14) * 2 + 1;
+const rowSpan = (dur: number) => dur * 2;
+---
+
+<div
+  id="whitelabel-demo"
+  class="container-content grid items-center gap-12 lg:grid-cols-2 lg:gap-16"
+  style={`--accent:${t0.accent};--accent-soft:${t0.accentSoft};--accent-ink:${t0.accentInk};`}
+>
+  <!-- interactive mockup (left on desktop) -->
+  <div class="reveal order-2 lg:order-1">
+    <div
+      class="rounded-panel border border-border bg-bg-subtle p-6 shadow-[0_30px_60px_-36px_rgba(32,29,74,0.4)] sm:p-8"
+    >
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-semibold text-fg-subtle">실시간 미리보기</p>
+        <span
+          class="rounded-pill bg-bg px-2.5 py-1 text-[0.7rem] font-semibold text-fg-muted ring-1 ring-border"
+          >학원 로고를 눌러보세요</span
+        >
+      </div>
+
+      <div class="mt-6 grid items-center gap-6 sm:grid-cols-[auto_1fr]">
+        <!-- phone -->
+        <div class="mx-auto w-[210px]">
+        <PhoneFrame label="화이트라벨 전용 앱 미리보기">
+          <div class="wl-screen" id="wl-screen">
+            <!-- status bar -->
+            <div class="wl-statusbar">
+              <span>9:41</span>
+              <span class="wl-status-icons" aria-hidden="true">
+                <svg viewBox="0 0 18 12" width="17" height="11"
+                  ><rect x="0" y="7" width="3" height="5" rx="1"></rect><rect
+                    x="5"
+                    y="4.5"
+                    width="3"
+                    height="7.5"
+                    rx="1"></rect><rect
+                    x="10"
+                    y="2"
+                    width="3"
+                    height="10"
+                    rx="1"></rect></svg
+                >
+                <svg viewBox="0 0 16 12" width="15" height="11" fill="none"
+                  ><path
+                    d="M8 10.5l.01-.01M2 5.5a9 9 0 0 1 12 0M4.5 8a5.5 5.5 0 0 1 7 0"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"></path></svg
+                >
+                <svg viewBox="0 0 26 12" width="24" height="11" fill="none"
+                  ><rect
+                    x="1"
+                    y="1.5"
+                    width="21"
+                    height="9"
+                    rx="2.5"
+                    stroke="currentColor"
+                    stroke-width="1.2"></rect><rect
+                    x="3"
+                    y="3.5"
+                    width="16"
+                    height="5"
+                    rx="1"
+                    fill="currentColor"></rect><rect
+                    x="23.5"
+                    y="4"
+                    width="1.8"
+                    height="4"
+                    rx="0.9"
+                    fill="currentColor"></rect></svg
+                >
+              </span>
+            </div>
+
+            <!-- app bar (rebrands) -->
+            <div class="wl-appbar">
+              <span class="wl-logo" id="wl-logo" set:html={t0.logo} />
+              <span class="wl-appname" id="wl-name">{t0.name}</span>
+              <span class="wl-bell" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+                  ><path
+                    d="M6 9a6 6 0 0 1 12 0c0 4 1.2 5.5 2 6.3.4.4.1 1.2-.5 1.2H4.5c-.6 0-.9-.8-.5-1.2.8-.8 2-2.3 2-6.3Z"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"></path><path
+                    d="M9.5 19a2.5 2.5 0 0 0 5 0"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"></path></svg
+                >
+              </span>
+            </div>
+
+            <!-- greeting -->
+            <div class="wl-greet">
+              <p class="wl-owner" id="wl-owner">{t0.owner}</p>
+              <p class="wl-sub" id="wl-sub">
+                오늘 수업 {t0.classCount}개 · 출석 예정 {t0.attendCount}명
+              </p>
+            </div>
+
+            <!-- section header -->
+            <div class="wl-sec">
+              <span>오늘 일정</span>
+              <span class="wl-date"><span id="wl-date">{t0.date}</span> ›</span>
+            </div>
+
+            <!-- week calendar -->
+            <div class="wl-cal">
+              <div class="wl-cal-days" aria-hidden="true">
+                <span></span>
+                {
+                  days.map((d, i) => (
+                    <span class={i === 0 ? "is-today" : ""}>{d}</span>
+                  ))
+                }
+              </div>
+              <div class="wl-grid" id="wl-grid">
+                {
+                  hours.map((h) => (
+                    <div
+                      class="wl-hour"
+                      style={`grid-row:${rowStart(h)}/span 2`}
+                    >
+                      {h}
+                    </div>
+                  ))
+                }
+                {
+                  t0.blocks.map((b) => (
+                    <div
+                      class="wl-block"
+                      data-tone={b.tone}
+                      data-now={b.now ? "true" : undefined}
+                      style={`grid-column:${b.day + 2};grid-row:${rowStart(b.start)}/span ${rowSpan(b.duration)}`}
+                    >
+                      <span>{b.label}</span>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+
+            <!-- schedule list -->
+            <ul class="wl-list" id="wl-list">
+              {
+                t0.schedule.map((it) => (
+                  <li class="wl-item" data-status={it.status}>
+                    <div class="wl-item-time">
+                      <b>{it.time}</b>
+                      <span>{it.dur}</span>
+                    </div>
+                    <span class="wl-dot" />
+                    <div class="wl-item-body">
+                      <p class="wl-item-title">{it.title}</p>
+                      <p class="wl-item-place">{it.place}</p>
+                    </div>
+                    <span class="wl-status" data-status={it.status}>
+                      {it.status === "live" ? "진행 중" : "예정"}
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+
+            <!-- stats -->
+            <div class="wl-stats">
+              <div class="wl-stat">
+                <p>오늘 수업</p>
+                <p class="wl-stat-num">
+                  <b id="wl-stat1">{t0.classCount}</b>개
+                </p>
+              </div>
+              <div class="wl-stat">
+                <p>출석 예정</p>
+                <p class="wl-stat-num">
+                  <b id="wl-stat2">{t0.attendCount}</b>명
+                </p>
+              </div>
+            </div>
+
+            <!-- bottom nav -->
+            <div class="wl-nav" aria-hidden="true">
+              <span class="is-active">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none"
+                  ><path
+                    d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1v-8.5Z"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"></path></svg
+                >홈</span
+              >
+              <span>
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none"
+                  ><path
+                    d="M5 5.5A1.5 1.5 0 0 1 6.5 4H18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6.5A1.5 1.5 0 0 1 5 18.5v-13Zm0 0A1.5 1.5 0 0 0 6.5 7H19"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linejoin="round"></path></svg
+                >수업</span
+              >
+              <span>
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none"
+                  ><rect
+                    x="4"
+                    y="5.5"
+                    width="16"
+                    height="14"
+                    rx="2.5"
+                    stroke="currentColor"
+                    stroke-width="1.6"></rect><path
+                    d="M4 9.5h16M8 3.5v3M16 3.5v3"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"></path></svg
+                >시간표</span
+              >
+              <span>
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none"
+                  ><circle
+                    cx="12"
+                    cy="8"
+                    r="3.2"
+                    stroke="currentColor"
+                    stroke-width="1.7"></circle><path
+                    d="M5.5 19.5a6.5 6.5 0 0 1 13 0"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"></path></svg
+                >메뉴</span
+              >
+            </div>
+          </div>
+        </PhoneFrame>
+        </div>
+
+        <!-- academy selector (right of phone) -->
+        <div class="wl-selector" role="group" aria-label="가상 학원 선택">
+        {
+          tenants.map((t, i) => (
+            <button
+              type="button"
+              class="tenant-card"
+              data-idx={i}
+              data-active={i === 0 ? "true" : "false"}
+              aria-pressed={i === 0 ? "true" : "false"}
+              style={`--card-accent:${t.accent};`}
+            >
+              <span class="tenant-logo" set:html={t.logo} />
+              <span class="tenant-meta">
+                <b>{t.name}</b>
+                <small>{t.category}</small>
+              </span>
+            </button>
+          ))
+        }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- copy (right on desktop) -->
+  <div class="reveal order-1 lg:order-2">
+    <div class="flex items-center gap-3">
+      <span
+        class="grid size-9 place-items-center rounded-xl bg-brand text-sm font-bold text-on-brand"
+        >{s.number}</span
+      >
+      <span class="text-sm font-semibold text-brand-strong">{s.eyebrow}</span>
+    </div>
+    <h3 class="mt-5 text-h2 text-fg">
+      {
+        titleLines.map((line, i) => (
+          <>
+            {line}
+            {i < titleLines.length - 1 && <br />}
+          </>
+        ))
+      }
+    </h3>
+    <p class="mt-5 text-lead text-fg-muted">{s.lead}</p>
+    <CheckList items={s.points} class="mt-7" />
+  </div>
+</div>
+
+<script
+  type="application/json"
+  id="wl-tenants"
+  set:html={JSON.stringify(tenants)}
+/>
+
+<style>
+  /* ── app screen ─────────────────────────────────────────────────────── */
+  .wl-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    transition: opacity 0.18s ease;
+    scrollbar-width: none;
+  }
+  .wl-screen::-webkit-scrollbar {
+    display: none;
+  }
+  .wl-screen.is-swapping {
+    opacity: 0.4;
+  }
+
+  .wl-statusbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px 2px;
+    background: var(--color-bg);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .wl-status-icons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-fg);
+  }
+
+  .wl-appbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+  }
+  .wl-logo {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: none;
+    color: var(--accent);
+    transition: color 0.4s var(--ease-out-soft);
+  }
+  .wl-logo :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+  }
+  .wl-appname {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .wl-bell {
+    margin-left: auto;
+    color: var(--color-fg);
+    line-height: 0;
+  }
+  .wl-bell :global(svg) {
+    width: 15px;
+    height: 15px;
+  }
+
+  .wl-greet {
+    padding: 2px 12px 8px;
+  }
+  .wl-owner {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .wl-sub {
+    margin-top: 2px;
+    font-size: 8.5px;
+    color: var(--color-fg-subtle);
+  }
+
+  .wl-sec {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 12px 6px;
+  }
+  .wl-sec > span:first-child {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .wl-date {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--accent);
+    transition: color 0.4s var(--ease-out-soft);
+  }
+
+  /* calendar */
+  .wl-cal {
+    padding: 0 10px;
+  }
+  .wl-cal-days {
+    display: grid;
+    grid-template-columns: 14px repeat(7, minmax(0, 1fr));
+    margin-bottom: 2px;
+    font-size: 7px;
+    font-weight: 700;
+    color: var(--color-fg-faint);
+  }
+  .wl-cal-days span {
+    text-align: center;
+  }
+  .wl-cal-days .is-today {
+    color: var(--accent);
+  }
+  .wl-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 14px repeat(7, minmax(0, 1fr));
+    grid-template-rows: repeat(14, 7px);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-border) 0,
+      var(--color-border) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  }
+  .wl-hour {
+    grid-column: 1;
+    padding-right: 3px;
+    font-size: 6.5px;
+    font-weight: 600;
+    color: var(--color-fg-faint);
+    text-align: right;
+    white-space: nowrap;
+    transform: translateY(-3px);
+  }
+  .wl-block {
+    min-width: 0;
+    margin: 1px;
+    overflow: hidden;
+    border-radius: 3px;
+    border-left: 2px solid color-mix(in srgb, var(--accent) 55%, #fff);
+    padding: 1px 3px;
+    background: color-mix(in srgb, var(--accent) 14%, #fff);
+    color: var(--accent-ink);
+    font-size: 6.5px;
+    font-weight: 700;
+    line-height: 1.1;
+    transition:
+      background 0.4s var(--ease-out-soft),
+      color 0.4s var(--ease-out-soft),
+      border-color 0.4s var(--ease-out-soft);
+  }
+  .wl-block[data-tone="1"] {
+    background: color-mix(in srgb, var(--accent) 24%, #fff);
+  }
+  .wl-block[data-now="true"] {
+    border-left-color: rgba(255, 255, 255, 0.65);
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* schedule list */
+  .wl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px 10px 2px;
+    list-style: none;
+  }
+  .wl-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 6px 8px;
+  }
+  .wl-item-time {
+    width: 30px;
+    flex: none;
+  }
+  .wl-item-time b {
+    display: block;
+    font-size: 9px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .wl-item-time span {
+    font-size: 6.5px;
+    color: var(--color-fg-faint);
+  }
+  .wl-dot {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-radius: 999px;
+    background: var(--accent);
+    transition: background 0.4s var(--ease-out-soft);
+  }
+  .wl-item[data-status="soon"] .wl-dot {
+    background: color-mix(in srgb, var(--accent) 45%, #fff);
+  }
+  .wl-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .wl-item-title {
+    overflow: hidden;
+    font-size: 9px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wl-item-place {
+    margin-top: 1px;
+    font-size: 7px;
+    color: var(--color-fg-subtle);
+  }
+  .wl-status {
+    flex: none;
+    border-radius: 999px;
+    padding: 2px 6px;
+    font-size: 7px;
+    font-weight: 700;
+  }
+  .wl-status[data-status="live"] {
+    background: var(--color-signal-ok-soft);
+    color: var(--color-emerald-700);
+  }
+  .wl-status[data-status="soon"] {
+    background: var(--color-bg-muted);
+    color: var(--color-fg-subtle);
+  }
+
+  /* stats */
+  .wl-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    padding: 4px 10px 8px;
+  }
+  .wl-stat {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 7px 9px;
+  }
+  .wl-stat p:first-child {
+    font-size: 7.5px;
+    color: var(--color-fg-subtle);
+  }
+  .wl-stat-num {
+    margin-top: 1px;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  /* bottom nav */
+  .wl-nav {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+    padding: 6px 0 8px;
+  }
+  .wl-nav span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 6.5px;
+    font-weight: 600;
+    color: var(--color-fg-faint);
+  }
+  .wl-nav :global(svg) {
+    width: 15px;
+    height: 15px;
+  }
+  .wl-nav .is-active {
+    color: var(--accent);
+    transition: color 0.4s var(--ease-out-soft);
+  }
+
+  /* ── academy selector ──────────────────────────────────────────────── */
+  .wl-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .tenant-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background: var(--color-bg);
+    padding: 10px;
+    text-align: left;
+    transition:
+      transform 0.18s var(--ease-out-soft),
+      border-color 0.18s,
+      box-shadow 0.18s;
+  }
+  .tenant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -16px rgba(32, 29, 74, 0.4);
+  }
+  .tenant-card[data-active="true"] {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var(--card-accent);
+  }
+  .tenant-logo {
+    display: block;
+    width: 34px;
+    height: 34px;
+    flex: none;
+    color: var(--card-accent);
+  }
+  .tenant-logo :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 9px;
+  }
+  .tenant-meta {
+    min-width: 0;
+  }
+  .tenant-meta b {
+    display: block;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tenant-meta small {
+    display: block;
+    margin-top: 1px;
+    overflow: hidden;
+    font-size: 10.5px;
+    color: var(--color-fg-subtle);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  interface TBlock {
+    label: string;
+    day: number;
+    start: number;
+    duration: number;
+    tone: number;
+    now?: boolean;
+  }
+  interface TItem {
+    time: string;
+    dur: string;
+    title: string;
+    place: string;
+    status: "live" | "soon";
+  }
+  interface T {
+    accent: string;
+    accentSoft: string;
+    accentInk: string;
+    logo: string;
+    name: string;
+    owner: string;
+    date: string;
+    classCount: number;
+    attendCount: number;
+    blocks: TBlock[];
+    schedule: TItem[];
+  }
+
+  const demo = document.getElementById("whitelabel-demo");
+  const dataEl = document.getElementById("wl-tenants");
+  if (demo && dataEl?.textContent) {
+    const tenants = JSON.parse(dataEl.textContent) as T[];
+    const screen = demo.querySelector<HTMLElement>("#wl-screen");
+    const cards = demo.querySelectorAll<HTMLButtonElement>(".tenant-card");
+
+    const $ = <E extends HTMLElement>(id: string) =>
+      demo.querySelector<E>(`#${id}`);
+    const logoEl = $("wl-logo");
+    const nameEl = $("wl-name");
+    const ownerEl = $("wl-owner");
+    const subEl = $("wl-sub");
+    const dateEl = $("wl-date");
+    const gridEl = $("wl-grid");
+    const listEl = $("wl-list");
+    const stat1 = $("wl-stat1");
+    const stat2 = $("wl-stat2");
+
+    const hours = [14, 15, 16, 17, 18, 19, 20];
+
+    const buildGrid = (t: T) => {
+      const labels = hours
+        .map(
+          (h) =>
+            `<div class="wl-hour" style="grid-row:${(h - 14) * 2 + 1}/span 2">${h}</div>`,
+        )
+        .join("");
+      const blocks = t.blocks
+        .map(
+          (b) =>
+            `<div class="wl-block" data-tone="${b.tone}"${b.now ? ' data-now="true"' : ""} style="grid-column:${b.day + 2};grid-row:${(b.start - 14) * 2 + 1}/span ${b.duration * 2}"><span>${b.label}</span></div>`,
+        )
+        .join("");
+      return labels + blocks;
+    };
+
+    const buildList = (t: T) =>
+      t.schedule
+        .map(
+          (it) =>
+            `<li class="wl-item" data-status="${it.status}"><div class="wl-item-time"><b>${it.time}</b><span>${it.dur}</span></div><span class="wl-dot"></span><div class="wl-item-body"><p class="wl-item-title">${it.title}</p><p class="wl-item-place">${it.place}</p></div><span class="wl-status" data-status="${it.status}">${it.status === "live" ? "진행 중" : "예정"}</span></li>`,
+        )
+        .join("");
+
+    const paint = (t: T) => {
+      demo.style.setProperty("--accent", t.accent);
+      demo.style.setProperty("--accent-soft", t.accentSoft);
+      demo.style.setProperty("--accent-ink", t.accentInk);
+      if (logoEl) logoEl.innerHTML = t.logo;
+      if (nameEl) nameEl.textContent = t.name;
+      if (ownerEl) ownerEl.textContent = t.owner;
+      if (subEl)
+        subEl.textContent = `오늘 수업 ${t.classCount}개 · 출석 예정 ${t.attendCount}명`;
+      if (dateEl) dateEl.textContent = t.date;
+      if (stat1) stat1.textContent = String(t.classCount);
+      if (stat2) stat2.textContent = String(t.attendCount);
+      if (gridEl) gridEl.innerHTML = buildGrid(t);
+      if (listEl) listEl.innerHTML = buildList(t);
+    };
+
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const select = (idx: number) => {
+      const t = tenants[idx];
+      if (!t) return;
+      cards.forEach((c, i) => {
+        const active = i === idx;
+        c.dataset.active = String(active);
+        c.setAttribute("aria-pressed", String(active));
+      });
+      if (reduce || !screen) {
+        paint(t);
+        return;
+      }
+      screen.classList.add("is-swapping");
+      window.setTimeout(() => {
+        paint(t);
+        screen.classList.remove("is-swapping");
+      }, 130);
+    };
+
+    cards.forEach((c) =>
+      c.addEventListener("click", () => select(Number(c.dataset.idx))),
+    );
+  }
+</script>

@@ -1,0 +1,41 @@
+---
+import SectionHeader from "./ui/SectionHeader.astro";
+import { processHeading, processLead, processSteps } from "../data/process";
+---
+
+<section id="process" class="section-y">
+  <div class="container-content">
+    <SectionHeader
+      eyebrow="도입 흐름"
+      heading={processHeading}
+      lead={processLead}
+    />
+
+    <ol class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+      {
+        processSteps.map((step, i) => (
+          <li
+            class="reveal relative flex flex-col rounded-panel border border-border bg-bg p-6"
+            style={`--reveal-delay: ${i * 80}ms;`}
+          >
+            <div class="flex items-center gap-3">
+              <span class="grid size-9 place-items-center rounded-xl bg-brand-soft text-sm font-bold text-brand-strong">
+                {step.step}
+              </span>
+              {i < processSteps.length - 1 && (
+                <span
+                  class="hidden h-px flex-1 bg-gradient-to-r from-border-strong to-transparent lg:block"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+            <h3 class="mt-4 text-h3 text-fg">{step.title}</h3>
+            <p class="mt-2.5 text-[0.92rem] leading-relaxed text-fg-muted">
+              {step.body}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

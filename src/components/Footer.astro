@@ -1,0 +1,65 @@
+---
+import { footerLinks } from "../data/navigation";
+import { site } from "../data/site";
+---
+
+<footer class="border-t border-border bg-bg-subtle">
+  <div class="container-content py-12">
+    <div class="flex flex-col gap-10 md:flex-row md:justify-between">
+      <div class="max-w-sm">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="grid size-8 place-items-center rounded-[0.6rem] bg-brand text-on-brand"
+            aria-hidden="true"
+          >
+            <img
+              src="/dionomy_logo.svg"
+              alt=""
+              width="24"
+              height="24"
+              aria-hidden="true"
+            />
+          </span>
+          <span class="text-lg font-bold tracking-tight text-fg">Dionomy</span>
+        </div>
+        <p class="mt-4 text-[0.92rem] leading-relaxed text-fg-muted">
+          성인 취미 학원이 더 이상 수강생을 조용히 잃지 않도록.
+        </p>
+      </div>
+
+      <nav class="flex flex-col gap-3" aria-label="푸터">
+        <p class="text-[0.8rem] font-semibold text-fg-subtle">바로가기</p>
+        <ul class="space-y-2.5">
+          {
+            footerLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-[0.92rem] text-fg-muted transition-colors hover:text-brand"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex flex-col gap-3">
+        <p class="text-[0.8rem] font-semibold text-fg-subtle">문의</p>
+        <a
+          href={`mailto:${site.email}`}
+          class="text-[0.92rem] text-fg-muted transition-colors hover:text-brand"
+        >
+          {site.email}
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-[0.8rem] text-fg-faint sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

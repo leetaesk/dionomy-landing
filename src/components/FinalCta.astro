@@ -1,0 +1,264 @@
+---
+import {
+  academyCategories,
+  finalCtaHeading,
+  finalCtaLead,
+} from "../data/categories";
+
+const headingLines = finalCtaHeading.split("\n");
+---
+
+<section id="apply" class="section-y">
+  <div class="container-content">
+    <div
+      class="relative overflow-hidden rounded-[2rem] bg-brand px-6 py-12 sm:px-10 sm:py-14 lg:px-14"
+    >
+      <!-- decorative glow -->
+      <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div
+          class="absolute -top-24 -left-20 size-72 rounded-full opacity-40 blur-3xl"
+          style="background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%);"
+        >
+        </div>
+        <div
+          class="absolute right-0 -bottom-28 size-80 rounded-full opacity-30 blur-3xl"
+          style="background: radial-gradient(circle, rgba(32,29,74,0.7), transparent 70%);"
+        >
+        </div>
+      </div>
+
+      <div
+        class="relative grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,28rem)]"
+      >
+        <!-- copy -->
+        <div class="reveal text-on-brand">
+          <h2 class="text-h2 leading-[1.18] font-bold text-balance">
+            {
+              headingLines.map((line, i) => (
+                <>
+                  {line}
+                  {i < headingLines.length - 1 && <br />}
+                </>
+              ))
+            }
+          </h2>
+          <p
+            class="mt-5 max-w-md text-[1.02rem] leading-relaxed text-on-brand/85"
+          >
+            {finalCtaLead}
+          </p>
+        </div>
+
+        <!-- form card -->
+        <div class="reveal" style="--reveal-delay: 100ms;">
+          <div
+            class="rounded-panel bg-bg p-6 shadow-[0_40px_80px_-30px_rgba(15,15,20,0.5)] sm:p-7"
+          >
+            <form id="apply-form" novalidate class="space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div class="field">
+                  <label for="f-name">이름</label>
+                  <input
+                    id="f-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    required
+                    placeholder="홍길동"
+                  />
+                </div>
+                <div class="field">
+                  <label for="f-studio">학원명</label>
+                  <input
+                    id="f-studio"
+                    name="studio"
+                    type="text"
+                    required
+                    placeholder="스튜디오 디오"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="f-phone">연락처</label>
+                <input
+                  id="f-phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  required
+                  placeholder="010-0000-0000"
+                />
+              </div>
+
+              <div class="field">
+                <label for="f-category">학원 카테고리</label>
+                <div class="select-wrap">
+                  <select id="f-category" name="category" required>
+                    <option value="" disabled selected hidden>
+                      카테고리를 선택하세요
+                    </option>
+                    {
+                      academyCategories.map((c) => (
+                        <option value={c}>{c}</option>
+                      ))
+                    }
+                  </select>
+                  <svg
+                    class="select-caret"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.58l3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.42Z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-btn">
+                무료 얼리어답터 신청
+              </button>
+              <p class="text-center text-[0.78rem] text-fg-faint">
+                제출하시면 영업일 기준 1~2일 내에 연락드립니다.
+              </p>
+            </form>
+
+            <!-- success state (hidden until submit) -->
+            <div id="apply-success" hidden class="py-6 text-center">
+              <div
+                class="mx-auto grid size-14 place-items-center rounded-full bg-signal-ok-soft"
+              >
+                <svg
+                  class="size-7 text-signal-ok"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.3 3.3 6.8-6.8a1 1 0 0 1 1.4 0Z"
+                    clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <p class="mt-4 text-h3 font-bold text-fg">신청이 접수됐어요</p>
+              <p class="mt-2 text-[0.92rem] text-fg-muted">
+                가장 먼저 연락드리겠습니다. 감사합니다!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- toast -->
+  <div
+    id="apply-toast"
+    role="status"
+    aria-live="polite"
+    class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-pill bg-ink-950 px-5 py-3 text-sm font-semibold text-white opacity-0 shadow-lg transition-all duration-300"
+  >
+    신청이 접수됐어요 🎉
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById("apply-form") as HTMLFormElement | null;
+  const success = document.getElementById("apply-success");
+  const toast = document.getElementById("apply-toast");
+
+  function showToast() {
+    if (!toast) return;
+    toast.classList.remove("opacity-0", "translate-y-4");
+    toast.classList.add("opacity-100", "translate-y-0");
+    window.setTimeout(() => {
+      toast.classList.add("opacity-0", "translate-y-4");
+      toast.classList.remove("opacity-100", "translate-y-0");
+    }, 3200);
+  }
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    // TODO: 폼 백엔드(Formspree/Tally/자체 API) 연결 — 현재는 콘솔 로그 스텁
+    console.log("[dionomy] 얼리어답터 신청:", data);
+
+    form.hidden = true;
+    if (success) success.hidden = false;
+    showToast();
+  });
+</script>
+
+<style>
+  .field label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--color-fg-muted);
+  }
+  .field input,
+  .select-wrap select {
+    width: 100%;
+    border-radius: 0.7rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    padding: 0.7rem 0.85rem;
+    font-size: 0.95rem;
+    color: var(--color-fg);
+    transition:
+      border-color 0.18s,
+      box-shadow 0.18s;
+    appearance: none;
+  }
+  .field input::placeholder {
+    color: var(--color-fg-faint);
+  }
+  .field input:focus,
+  .select-wrap select:focus {
+    outline: none;
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-brand) 18%, transparent);
+  }
+  .select-wrap {
+    position: relative;
+  }
+  .select-caret {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    width: 1.1rem;
+    height: 1.1rem;
+    transform: translateY(-50%);
+    color: var(--color-fg-subtle);
+    pointer-events: none;
+  }
+  .submit-btn {
+    width: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--color-brand);
+    padding: 0.85rem 1rem;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--color-on-brand);
+    transition:
+      background-color 0.18s,
+      transform 0.18s;
+  }
+  .submit-btn:hover {
+    background: var(--color-brand-strong);
+    transform: translateY(-1px);
+  }
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+</style>

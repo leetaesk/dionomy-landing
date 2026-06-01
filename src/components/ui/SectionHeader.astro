@@ -1,0 +1,37 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props {
+  eyebrow?: string;
+  heading: string; // supports \n for line breaks
+  lead?: string;
+  align?: "center" | "left";
+  class?: string;
+}
+const {
+  eyebrow,
+  heading,
+  lead,
+  align = "center",
+  class: extra = "",
+} = Astro.props;
+
+const lines = heading.split("\n");
+const alignCls =
+  align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl";
+---
+
+<div class={`reveal ${alignCls} ${extra}`}>
+  {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+  <h2 class:list={["text-h2 text-fg", eyebrow ? "mt-5" : ""]}>
+    {
+      lines.map((line, i) => (
+        <>
+          {line}
+          {i < lines.length - 1 && <br />}
+        </>
+      ))
+    }
+  </h2>
+  {lead && <p class="mt-5 text-lead text-fg-muted">{lead}</p>}
+</div>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "md" | "lg";
+  class?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  class: extra = "",
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-pill font-semibold whitespace-nowrap transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+
+const sizes = {
+  md: "px-5 py-2.5 text-[0.95rem]",
+  lg: "px-7 py-3.5 text-base",
+};
+
+const variants = {
+  primary:
+    "bg-brand text-on-brand shadow-[0_1px_2px_rgba(32,29,74,0.12),0_8px_24px_-8px_rgba(91,91,214,0.55)] hover:bg-brand-strong hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(32,29,74,0.14),0_14px_32px_-10px_rgba(91,91,214,0.6)] active:translate-y-0",
+  secondary:
+    "bg-bg text-fg ring-1 ring-inset ring-border-strong hover:bg-bg-subtle hover:ring-border-strong hover:-translate-y-0.5 active:translate-y-0",
+  ghost: "text-fg-muted hover:text-fg hover:bg-bg-subtle",
+};
+---
+
+<a href={href} class={`${base} ${sizes[size]} ${variants[variant]} ${extra}`}>
+  <slot />
+</a>
