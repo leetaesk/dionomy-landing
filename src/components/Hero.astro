@@ -7,70 +7,6 @@ import { primaryCta, secondaryCta } from "../data/navigation";
   id="top"
   class="relative flex min-h-dvh w-full items-center overflow-hidden pt-[75.6px]"
 >
-  <!-- 그라데이션 -->
-  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-    <!-- soft ambient wash, top-right -->
-    <div
-      class="absolute top-[-22%] right-[-12%] h-[55rem] w-[55rem] rounded-full opacity-80 blur-[120px]"
-      style="background: radial-gradient(circle at center, rgba(122,122,219,0.4), rgba(122,122,219,0) 65%);"
-    >
-    </div>
-    <!-- core brand blob, right-center -->
-    <div
-      class="hero-float absolute top-[8%] right-[2%] h-[34rem] w-[34rem] rounded-full opacity-70 blur-[90px]"
-      style="background: radial-gradient(circle at 40% 40%, rgba(91,91,214,0.5), rgba(91,91,214,0) 62%);"
-    >
-    </div>
-    <!-- deep accent, lower-right for depth -->
-    <div
-      class="hero-float-slow absolute right-[-6%] bottom-[-18%] h-[30rem] w-[30rem] rounded-full opacity-60 blur-[100px]"
-      style="background: radial-gradient(circle at center, rgba(74,68,196,0.4), rgba(74,68,196,0) 64%);"
-    >
-    </div>
-    <!-- light lift, just behind the mockup -->
-    <div
-      class="absolute top-[34%] right-[20%] h-[22rem] w-[22rem] rounded-full opacity-70 blur-[80px]"
-      style="background: radial-gradient(circle at center, rgba(185,185,238,0.55), rgba(185,185,238,0) 60%);"
-    >
-    </div>
-    <!-- top-edge spill, reaches toward center to fill the upper band -->
-    <div
-      class="hero-float-slow absolute top-[-16%] right-[28%] h-[26rem] w-[26rem] rounded-full opacity-55 blur-[90px]"
-      style="background: radial-gradient(circle at center, rgba(149,149,227,0.42), rgba(149,149,227,0) 62%);"
-    >
-    </div>
-    <!-- mid-right magenta-leaning lift for hue variety -->
-    <div
-      class="hero-float absolute top-[52%] right-[8%] h-[24rem] w-[24rem] rounded-full opacity-50 blur-[85px]"
-      style="background: radial-gradient(circle at center, rgba(106,90,224,0.4), rgba(106,90,224,0) 62%);"
-    >
-    </div>
-    <!-- small bright core hotspot behind the mockup -->
-    <div
-      class="absolute top-[26%] right-[12%] h-[15rem] w-[15rem] rounded-full opacity-60 blur-[60px]"
-      style="background: radial-gradient(circle at center, rgba(214,214,246,0.6), rgba(214,214,246,0) 58%);"
-    >
-    </div>
-    <!-- shaped conic ring — gives the wash an actual silhouette -->
-    <div
-      class="absolute top-[2%] right-[-8%] h-[40rem] w-[40rem] rounded-full opacity-40 blur-2xl"
-      style="background: conic-gradient(from 140deg at 60% 45%, rgba(91,91,214,0) 0deg, rgba(122,122,219,0.28) 70deg, rgba(149,149,227,0) 150deg, rgba(91,91,214,0) 360deg); mask-image: radial-gradient(circle at center, transparent 48%, black 52%, black 70%, transparent 78%);"
-    >
-    </div>
-    <!-- faint grid, masked toward the right so it never crowds the headline -->
-    <div
-      class="absolute inset-0 opacity-[0.5]"
-      style="background-image: linear-gradient(to right, rgba(32,29,74,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(32,29,74,0.04) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse 70% 70% at 80% 35%, black, transparent 72%);"
-    >
-    </div>
-    <!-- legibility guard: keep the left (copy) column on a clean surface -->
-    <div
-      class="absolute inset-0"
-      style="background: linear-gradient(100deg, var(--color-bg) 12%, rgba(255,255,255,0.55) 38%, transparent 62%);"
-    >
-    </div>
-  </div>
-
   <!-- 컨테이너 -->
   <div
     class="container-content my-auto grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]"
@@ -123,32 +59,8 @@ import { primaryCta, secondaryCta } from "../data/navigation";
       <img
         src="/hero_mock.png"
         alt="Dionomy 앱 화면 미리보기 — 스튜디오 일정과 수업 관리"
-        class="w-[120%]"
+        class="h-full w-auto"
       />
     </div>
   </div>
 </section>
-
-<style>
-  @keyframes heroFloat {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  .hero-float {
-    animation: heroFloat 6s ease-in-out infinite;
-  }
-  .hero-float-slow {
-    animation: heroFloat 7.5s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-float,
-    .hero-float-slow {
-      animation: none;
-    }
-  }
-</style>
