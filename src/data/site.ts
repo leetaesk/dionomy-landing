@@ -1,7 +1,7 @@
 export const site = {
   name: "Dionomy",
   legalName: "nangman Corporation",
-  url: "https://dionomy.app",
+  url: "https://dionomy-landing.nangmans.com", // 런칭 시 https://dionomy.app 로 교체
   email: "contact@nangmans.com", // TODO: 실제 문의 이메일로 교체
   defaultTitle: "Dionomy · 우리 스튜디오만을 위한 우리 스튜디오 어플",
   description:
