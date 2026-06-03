@@ -3,9 +3,8 @@ export const site = {
   legalName: "nangman Corporation",
   url: "https://dionomy.app",
   email: "contact@nangmans.com", // TODO: 실제 문의 이메일로 교체
-  defaultTitle: "Dionomy · 성인 취미 스튜디오를 위한 스튜디오 앱 빌더",
+  defaultTitle: "Dionomy · 우리 스튜디오만을 위한 우리 스튜디오 어플",
   description:
-    "흩어진 스튜디오 운영을 하나로 모으고, 떠나려는 신호를 미리 잡아내는 스튜디오 앱 빌더. 화이트라벨 전용 앱과 AI 이탈 신호 CRM으로 성인 취미 스튜디오의 조용한 이탈을 막습니다.",
-  ogImage: "/og-image.png", // TODO: 실제 1200x630 OG 이미지로 교체
-  program: "SW마에스트로 17기",
+    "수업 일정, 클래스 노트, 재등록 안내까지 — 스튜디오 로고를 넣은 우리 스튜디오 전용 앱 하나로. 카톡과 엑셀로 흩어지던 운영을 Dionomy에서 모으고, AI 이탈 신호 CRM이 이번 주 챙겨야 할 수강생을 먼저 알려드립니다.",
+  ogImage: "/og_image.png", // 1200x630, Figma Brand Assets에서 생성
 } as const;
