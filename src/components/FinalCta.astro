@@ -38,7 +38,7 @@ import {
           <p
             class="mt-5 max-w-md text-[1.02rem] leading-relaxed text-on-brand/85"
           >
-            {finalCtaLead}
+            <Multiline text={finalCtaLead} />
           </p>
         </div>
 
@@ -178,7 +178,7 @@ import {
               </div>
               <p class="mt-4 text-h3 font-bold text-fg">신청이 접수됐어요</p>
               <p class="mt-2 text-[0.92rem] text-fg-muted">
-                가장 먼저 연락드리겠습니다. 감사합니다!
+                영업일 기준 1~2일 내에 연락드리겠습니다. 감사합니다!
               </p>
             </div>
           </div>
@@ -202,6 +202,32 @@ import {
   const form = document.getElementById("apply-form") as HTMLFormElement | null;
   const success = document.getElementById("apply-success");
   const toast = document.getElementById("apply-toast");
+
+  // ── 중복 신청 방지: 이미 신청했으면 폼 대신 완료 화면 ──────────
+  const APPLIED_KEY = "dionomy:applied";
+
+  function showApplied() {
+    if (form) form.hidden = true;
+    if (success) success.hidden = false;
+  }
+
+  function hasApplied() {
+    try {
+      return localStorage.getItem(APPLIED_KEY) === "true";
+    } catch {
+      return false;
+    }
+  }
+
+  function markApplied() {
+    try {
+      localStorage.setItem(APPLIED_KEY, "true");
+    } catch {
+      /* localStorage 사용 불가(시크릿 모드 등) 시 무시 */
+    }
+  }
+
+  if (hasApplied()) showApplied();
 
   // ── custom category dropdown ──────────────────────────────
   const combo = document.querySelector<HTMLElement>("[data-combo]");
@@ -371,6 +397,7 @@ import {
     // TODO: 폼 백엔드(Formspree/Tally/자체 API) 연결 — 현재는 콘솔 로그 스텁
     console.log("[dionomy] 파트너 신청:", data);
 
+    markApplied();
     form.hidden = true;
     if (success) success.hidden = false;
     showToast();
